@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "MyBaseplayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "AMyTimedGameMode.h"
@@ -16,7 +14,6 @@ void AMyBaseplayerController::SetupInputComponent() {
 			&AMyBaseplayerController::TogglePauseGame
 		);
 
-	// Allow this binding to fire even when the game is paused
 	PauseBinding.bExecuteWhenPaused = true;
 }
 
@@ -29,21 +26,19 @@ void AMyBaseplayerController::TogglePauseGame() {
 
     bool bCurrentlyPaused = UGameplayStatics::IsGamePaused(World);
 
-    // Cast to your custom GameMode
+    // Cast to custom GameMode
     AMyTimedGameMode* GM = Cast<AMyTimedGameMode>(UGameplayStatics::GetGameMode(World));
     if (GM && GM->IsGameOver())
     {
-        // If game is over and paused, prevent unpausing
         if (bCurrentlyPaused)
         {
             return; // Block unpause
         }
     }
 
-    // Normal pause toggle logic below...
     UGameplayStatics::SetGamePaused(World, !bCurrentlyPaused);
 
-    if (!bCurrentlyPaused) { // we just paused
+    if (!bCurrentlyPaused) { // Paused
 
         if (PauseMenuClass) {
             PauseMenuInstance = CreateWidget<UUserWidget>(this, PauseMenuClass);
@@ -60,7 +55,7 @@ void AMyBaseplayerController::TogglePauseGame() {
         }
 
     }
-    else { // we just unpaused
+    else { // Unpaused
         if (PauseMenuInstance) {
             PauseMenuInstance->RemoveFromParent();
             PauseMenuInstance = nullptr;
