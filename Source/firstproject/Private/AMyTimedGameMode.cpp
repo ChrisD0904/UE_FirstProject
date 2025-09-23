@@ -17,14 +17,13 @@ AMyTimedGameMode::AMyTimedGameMode()
     DangerVolume = nullptr;
 }
 
-
+// When the game starts
 void AMyTimedGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
     bIsGameOver = false;
 
-    // Start single‑shot 20‑second timer (change to 180.0f for production)
     GetWorldTimerManager().SetTimer(
         GameTimerHandle,
         this,
@@ -46,6 +45,7 @@ void AMyTimedGameMode::BeginPlay()
     SpawnCoresRandomly();
 }
 
+// Randomly spawns cores by picking positions on the map I selected already
 void AMyTimedGameMode::SpawnCoresRandomly()
 {
     if (!ReactorClass)
@@ -85,7 +85,7 @@ void AMyTimedGameMode::SpawnCoresRandomly()
 }
 
 
-
+// Handles the explosion when timer runs out
 void AMyTimedGameMode::OnGameTimerExpired()
 {
 
@@ -109,7 +109,7 @@ void AMyTimedGameMode::OnGameTimerExpired()
             ExplosionEffect,
             Location,
             Rotation,
-            FVector(50.0f) // Uniform scale: 5x larger in all directions
+            FVector(50.0f) 
         );
 
     }
@@ -137,7 +137,6 @@ void AMyTimedGameMode::ShowGameOverUIWithPause()
         {
             GameOverWidgetInstance->AddToViewport();
 
-            // Set input mode to UI only and focus on the widget
             APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
             if (PC)
             {
@@ -189,7 +188,7 @@ void AMyTimedGameMode::AddTime(float ExtraSeconds) {
     );
 }
 
-// In Tick():
+// Function to handle the red flash when game is close to finishing
 void AMyTimedGameMode::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
@@ -229,16 +228,13 @@ void AMyTimedGameMode::Tick(float DeltaSeconds)
     float TargetBlend;
     if (CycleTime < HalfCycle)
     {
-        // Fade in 0→1 over first half
         TargetBlend = CycleTime / HalfCycle;
     }
     else
     {
-        // Fade out 1→0 over second half
         TargetBlend = 1.0f - ((CycleTime - HalfCycle) / HalfCycle);
     }
 
-    // Direct set for crisp timing
     DangerVolume->BlendWeight = TargetBlend;
 }
 
