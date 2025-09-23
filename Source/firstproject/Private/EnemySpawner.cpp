@@ -1,4 +1,3 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EnemySpawner.h"
 
@@ -7,12 +6,11 @@
 // Sets default values
 AEnemySpawner::AEnemySpawner()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 }
 
-// Called when the game starts or when spawned
+// Called when the game starts or when enemy is spawned
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
@@ -45,13 +43,13 @@ void AEnemySpawner::CheckPlayerDistance()
 
     const float Dist = FVector::Dist(Player->GetActorLocation(), GetActorLocation());
 
-    // 1) First‑time ever spawn
+    // First‑time enemy is ever spawned
     if (!bHasEverSpawned && Dist <= SpawnRadius)
     {
         SpawnEnemies();
         bHasEverSpawned = true;
         bIsActive = true;
-        return;  // don’t immediately deactivate
+        return;  
     }
 
     if (bHasEverSpawned)
@@ -97,7 +95,6 @@ void AEnemySpawner::ActivateEnemies()
         A->SetActorHiddenInGame(false);
         A->SetActorEnableCollision(true);
         A->SetActorTickEnabled(true);
-        // if needed, re‑start any AI logic here
     }
 }
 
@@ -109,7 +106,6 @@ void AEnemySpawner::DeactivateEnemies()
         A->SetActorHiddenInGame(true);
         A->SetActorEnableCollision(false);
         A->SetActorTickEnabled(false);
-        // optionally stop AI: 
         if (APawn* P = Cast<APawn>(A))
             if (P->Controller)
                 P->Controller->StopMovement();
