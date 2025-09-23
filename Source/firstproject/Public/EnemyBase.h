@@ -12,11 +12,11 @@ class FIRSTPROJECT_API AEnemyBase : public ACharacter
 public:
     AEnemyBase();
 
-    /** List of powerup classes that drop */
+    // List of powerup classes that drop 
     UPROPERTY(EditDefaultsOnly, Category = "Drops")
     TArray<TSubclassOf<AActor>> PowerupsToDrop;
 
-    /** Overall chance [0–1] that *any* drop happens */
+    // Odds of anything dropping
     UPROPERTY(EditDefaultsOnly, Category = "Drops", meta = (ClampMin = "0.0", ClampMax = "1.0"))
     float DropChance = 0.5f;
 
