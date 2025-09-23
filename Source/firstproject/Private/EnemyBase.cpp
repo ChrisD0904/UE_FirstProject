@@ -10,16 +10,16 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::Destroyed()
 {
     UWorld* World = GetWorld();
-    if (World && World->HasBegunPlay())  // ← only after Play starts
+    if (World && World->HasBegunPlay())  //Only runs after play starts
     {
-        // 1) Roll to see if we drop anything at all
+        // Roll to see if anything will even drop
         if (PowerupsToDrop.Num() > 0 && FMath::FRand() <= DropChance)
         {
-            // 2) Pick one index at random
+            // Pick one index at random
             int32 Index = FMath::RandRange(0, PowerupsToDrop.Num() - 1);
             TSubclassOf<AActor> ChosenClass = PowerupsToDrop[Index];
 
-            // 3) Spawn it
+            // Spawn the collectible
             if (ChosenClass)
             {
                 FActorSpawnParameters Params;
@@ -36,6 +36,6 @@ void AEnemyBase::Destroyed()
         }
     }
 
-    // 4) Finally destroy the enemy as normal
+    // Finally destroy the enemy 
     Super::Destroyed();
 }
